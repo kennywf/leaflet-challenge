@@ -6,13 +6,26 @@
     zoom: 5,
   });
 
-// Store our API endpoint inside queryUrl
+// JSON URL for earthquakes in 1 day and plates 
 var queryUrl = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson";
+var platesUrl = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_plates.json"
 
-// Perform a GET request to the query URL earthquake data 
+// Perform a GET request to the query URL for earthquake data 
 d3.json(queryUrl, function(data) {
   createFeatures(data.features);
 });
+
+// Create fault line layer 
+var faultlines = new L.layerGroup();
+// Perform a GET request to the plate URL for tectonic plates data
+d3.json(platesUrl, function(platesData) {
+  L.geoJSON(platesData, {
+              weight: 2,
+              color: 'orange',
+              fillOpacity: 0
+           })
+  .addTo(faultlines);
+})
 
 // Define a function for marker color 
 function markerColor(mag) {
@@ -101,7 +114,8 @@ function createMap(earthquakes) {
 
 // Create overlay object to hold our overlay layer
   var overlayMaps = {
-    Earthquakes: earthquakes
+    "Earthquakes": earthquakes,
+    "Fault Lines": faultlines
   };
   
 // Create a layer control, pass in our baseMaps and overlayMaps and add the layer control to the map
