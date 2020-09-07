@@ -1,3 +1,5 @@
+You can see the map following this link: (https://kennywf.github.io/leaflet-challenge/)
+
 # Leaflet Homework - Visualizing Data with Leaflet
 
 ## Background
